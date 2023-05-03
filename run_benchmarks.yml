@@ -1,6 +1,16 @@
+- name: Set benchmark to use Memory
+  ansible.builtin.set_fact:
+    benchmark: benchmark_ultimate_memory.json.j2
+  when: ultimate_benchmark_memory | bool
+
+- name: Set benchmark to use CPU
+  ansible.builtin.set_fact:
+    benchmark: benchmark_ultimate_cpu.json.j2
+  when: ultimate_benchmark_cpu | bool
+
 - name: Upload Benchmark
   ansible.builtin.uri:
-    url: 'https://hyperfoil-instance-{{ item }}-hyperfoil.{{ route_subdomain }}/benchmark'
+    url: 'https://{{ item }}-hyperfoil.{{ route_subdomain }}/benchmark'
     url_password: openshift
     url_username: '{{ item }}'
     force_basic_auth: true
@@ -15,10 +25,11 @@
   retries: 5
   delay: 10
   until: r_benchmark.status in [200, 201, 204]
+  loop: '{{ users }}'
 
 - name: Start Benchmark
   ansible.builtin.uri:
-    url: 'https://hyperfoil-instance-{{ item }}-hyperfoil.{{ route_subdomain }}/benchmark/summit-lab-load-apps/start'
+    url: 'https://{{ item }}-hyperfoil.{{ route_subdomain }}/benchmark/summit-lab-load-apps/start'
     url_password: openshift
     url_username: '{{ item }}'
     force_basic_auth: true
@@ -33,3 +44,4 @@
   retries: 5
   delay: 10
   until: r_benchmark.status in [200, 201,202, 204]
+  loop: '{{ users }}'

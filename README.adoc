@@ -1,6 +1,10 @@
-= How to run
+= Performance Monitoring Load Test
 
-1. Set if you want to run benchmarks and the pipelines using: `run_pipelines` and `run_benchmarks`
-2. You can use the ultimate test using: `ultimate_benchmark_cpu` or `ultimate_benchmark_memory`
+This repository contains an automation to run load test on the `Modern Cloud-native Java runtimes performance monitoring on Red Hat Openshift` workshop.
+
+== How to run
+
+1. Set if you want to run benchmarks and the pipelines using: `run_pipelines` and `run_benchmarks` variables.
+2. You can use the ultimate test using: `ultimate_benchmark_cpu` or `ultimate_benchmark_memory` variables.
 3. Log in to your OCP Cluster using *oc*    
 4. run: *ansible-playbook playbook.yml*

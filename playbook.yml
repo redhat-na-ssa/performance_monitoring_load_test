@@ -1,11 +1,11 @@
 - hosts: localhost
-  name: Run Tests
+  name: Run Load Test
   vars:
     delete_demo: false
     verify_tls: false
     insecure_skip_tls_verify: true
-    num_users: 20
-    run_pipelines: false
+    num_users: 55
+    run_pipelines: true
     run_benchmarks: true
     ultimate_benchmark_cpu: false
     ultimate_benchmark_memory: true
@@ -43,7 +43,6 @@
 
     - name: Run pipelines
       ansible.builtin.include_tasks: run_pipelines.yml
-      loop: '{{ users }}'
       when: run_pipelines | bool
 
     - name: Evaluate Deployments
@@ -66,10 +65,8 @@
 
     - name: Update Knative
       ansible.builtin.include_tasks: update_serverless.yml
-      loop: '{{ users }}'
       when: run_benchmarks | bool
 
     - name: Run Benchmarks
       ansible.builtin.include_tasks: run_benchmarks.yml
-      loop: '{{ users }}'
       when: run_benchmarks | bool

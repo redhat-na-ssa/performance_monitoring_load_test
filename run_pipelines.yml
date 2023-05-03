@@ -4,6 +4,7 @@
     state: absent
     namespace: '{{ item }}-cicd'
     resource_definition: "{{ lookup('template', 'pipeline.yml.j2') }}"
+  loop: '{{ users }}'
 
 # We don't want to build images, so we need to replace the pipelines
 - name: Patch Pipelines
@@ -12,6 +13,7 @@
     state: present
     namespace: '{{ item }}-cicd'
     resource_definition: "{{ lookup('template', 'pipeline.yml.j2') }}"
+  loop: '{{ users }}'
 
 - name: Clear old PipelineRun
   kubernetes.core.k8s:
@@ -19,6 +21,7 @@
     state: absent
     namespace: '{{ item }}-cicd'
     resource_definition: "{{ lookup('template', 'pipeline-run.yml.j2') }}"
+  loop: '{{ users }}'
 
 - name: Evaluate PipelineRun
   kubernetes.core.k8s:
@@ -26,3 +29,4 @@
     state: present
     namespace: '{{ item }}-cicd'
     resource_definition: "{{ lookup('template', 'pipeline-run.yml.j2') }}"
+  loop: '{{ users }}'
